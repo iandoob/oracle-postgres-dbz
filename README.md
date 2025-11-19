@@ -13,4 +13,6 @@ curl -i -X POST -H "Accept:application/json" -H "Content-Type:application/json" 
 curl -i -X POST -H "Accept:application/json" -H "Content-Type:application/json" localhost:8083/connectors -d @register-jdbc-sink-postgres.json
 ```
 
-Use http://localhost:8080/ui/clusters/local/connectors to view the connectors (Username: admin, Password: Admin@123)
+Use http://localhost:8080/ui/clusters/local/connectors to view the connectors  
+Username: admin  
+Password: Admin@123

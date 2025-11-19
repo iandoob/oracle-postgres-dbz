@@ -1,0 +1,93 @@
+name: dbz
+
+services:
+  zookeeper:
+    image: quay.io/debezium/zookeeper:${DEBEZIUM_VERSION}
+    ports:
+      - "2181:2181"
+      - "2888:2888"
+      - "3888:3888"
+
+  kafka:
+    image: quay.io/debezium/kafka:${DEBEZIUM_VERSION}
+    hostname: kafka
+    links:
+      - zookeeper
+    ports:
+      - "9092:9092"
+    environment:
+      CLUSTER_ID: IanCDC
+      NODE_ID: 1
+      NODE_ROLE: combined
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:9093
+      KAFKA_LISTENERS: PLAINTEXT://kafka:9092,CONTROLLER://kafka:9093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      ZOOKEEPER_CONNECT: zookeeper:2181
+
+  oracle21:
+    image: oracle/database:${ORACLE_VERSION}
+    ports:
+      - "1521:1521"
+    volumes:
+      - /home/ian/debezium/oracle_scripts:/opt/oracle/scripts/setup
+    environment:
+      ORACLE_PWD: stmarys
+      
+  postgres18:
+    image: postgres:${POSTGRES_VERSION}
+    ports:
+      - "5436:5432"
+    environment:
+      POSTGRES_DB: debezium
+      POSTGRES_PASSWORD: dbz
+      POSTGRES_USER: dbzuser
+
+  connect:
+    image: quay.io/debezium/connect:${DEBEZIUM_VERSION}
+    links:
+      - kafka
+      - oracle21
+      - postgres18
+    ports:
+      - "8083:8083"
+    volumes:
+      - /home/ian/oracle/ojdbc11.jar:/kafka/libs/ojdbc11.jar
+    environment:
+      BOOTSTRAP_SERVERS: kafka:9092
+      GROUP_ID: 1
+      CONFIG_STORAGE_TOPIC: my_connect_configs
+      OFFSET_STORAGE_TOPIC: my_connect_offsets
+      STATUS_STORAGE_TOPIC: my_connect_statuses
+      KEY_CONVERTER_SCHEMAS_ENABLE: "false"
+      VALUE_CONVERTER_SCHEMAS_ENABLE: "false"
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest  
+    depends_on:
+      - kafka
+      - connect  
+    ports:
+      - "8080:8080"
+    environment:
+      KAFKA_CLUSTERS_0_NAME: local  
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092  
+      KAFKA_CLUSTERS_0_ZOOKEEPER: zookeeper:2181  
+      KAFKA_CLUSTERS_0_KAFKACONNECT_0_NAME: connect
+      KAFKA_CLUSTERS_0_KAFKACONNECT_0_ADDRESS: http://connect:8083
+      DYNAMIC_CONFIG_ENABLED: 'true'
+      AUTH_TYPE: LOGIN_FORM  
+      SPRING_SECURITY_USER_NAME: admin  
+      SPRING_SECURITY_USER_PASSWORD: Admin@123
+
+#  debezium-ui:
+#    image: quay.io/debezium/debezium-ui:latest
+#    depends_on:
+#      - kafka
+#      - connect
+#    links:
+#      - kafka
+#      - connect
+#    ports:
+#      - "8082:8080"
+#    environment:
+#      KAFKA_CONNECT_URIS: http://connect:8083

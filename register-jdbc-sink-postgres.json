@@ -1,0 +1,18 @@
+{
+    "name": "jdbc-postgres-connector",
+    "config": {
+        "connector.class": "io.debezium.connector.jdbc.JdbcSinkConnector",
+        "connection.url": "jdbc:postgresql://postgres18:5432/debezium", 
+        "connection.username": "dbzuser",  
+        "connection.password": "dbz",  
+        "insert.mode": "upsert",  
+        "delete.enabled": "true",  
+        "primary.key.mode": "record_key",  
+        "schema.evolution": "basic",  
+        "topics.regex": "football-db.C__DBZUSER.*",
+	"transforms": "renameTable",
+        "transforms.renameTable.type": "org.apache.kafka.connect.transforms.RegexRouter",
+        "transforms.renameTable.regex": "football-db.C__DBZUSER.(.*)",
+        "transforms.renameTable.replacement": "$1"
+    }
+}

@@ -29,7 +29,7 @@ services:
     ports:
       - "1521:1521"
     volumes:
-      - /home/ian/debezium/oracle_scripts:/opt/oracle/scripts/setup
+      - ./oracle_scripts:/opt/oracle/scripts/setup
     environment:
       ORACLE_PWD: stmarys
       

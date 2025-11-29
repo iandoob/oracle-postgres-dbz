@@ -3,6 +3,13 @@ Move data from an Oracle Database to a Postgres Database using Debezium.
 
 ## Setup
 
+### Oracle Database
+```
+git clone https://github.com/oracle/docker-images.git  
+cd docker-images/OracleDatabase/SingleInstance/dockerfiles
+./buildContainerImage.sh -v 21.3.0 -x -t oracle/database:21
+```
+
 ### Docker Environment
 `DEBEZIUM_VERSION=3.3 POSTGRES_VERSION=18 ORACLE_VERSION=21 docker compose up -d`  
 The Oracle Database will take about 7 minutes to setup.  

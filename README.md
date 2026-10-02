@@ -12,7 +12,7 @@ cd docker-images/OracleDatabase/SingleInstance/dockerfiles
 
 ### Docker Environment
 ```
-DEBEZIUM_VERSION=3.3 POSTGRES_VERSION=18 ORACLE_VERSION=21 docker compose up -d
+KAFKA_VERSION=4.3.1 DEBEZIUM_VERSION=3.7 POSTGRES_VERSION=18 ORACLE_VERSION=21 docker compose up -d
 ```
 The Oracle Database will take about 7 minutes to setup.  
 

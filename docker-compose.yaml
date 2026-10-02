@@ -107,7 +107,7 @@ services:
       VALUE_CONVERTER_SCHEMAS_ENABLE: "false"
 
   kafka-ui:
-    image: provectuslabs/kafka-ui:latest  
+    image: kafbat/kafka-ui:main 
     depends_on:
       - kafka-1
       - kafka-2
@@ -116,10 +116,14 @@ services:
     ports:
       - "8080:8080"
     environment:
-      KAFKA_CLUSTERS_0_NAME: local  
-      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka-1:9092,kafka-2:9092  
+      KAFKA_CLUSTERS_0_NAME: kafka1  
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka-1:9092  
       KAFKA_CLUSTERS_0_KAFKACONNECT_0_NAME: connect
       KAFKA_CLUSTERS_0_KAFKACONNECT_0_ADDRESS: http://connect:8083
+      KAFKA_CLUSTERS_1_NAME: kafka2
+      KAFKA_CLUSTERS_1_BOOTSTRAPSERVERS: kafka-2:9092
+      KAFKA_CLUSTERS_2_NAME: kafka3
+      KAFKA_CLUSTERS_2_BOOTSTRAPSERVERS: kafka-3:9092
       DYNAMIC_CONFIG_ENABLED: 'true'
       AUTH_TYPE: LOGIN_FORM  
       SPRING_SECURITY_USER_NAME: admin  

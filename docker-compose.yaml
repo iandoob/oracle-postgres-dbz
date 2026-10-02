@@ -96,7 +96,7 @@ services:
     ports:
       - "8083:8083"
     volumes:
-      - /home/ian/oracle/ojdbc11.jar:/kafka/libs/ojdbc11.jar
+      - /home/ian/oracle/ojdbc17.jar:/kafka/libs/ojdbc17.jar
     environment:
       BOOTSTRAP_SERVERS: kafka-1:9092,kafka-2:9092
       GROUP_ID: 1

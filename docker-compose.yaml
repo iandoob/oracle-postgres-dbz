@@ -73,6 +73,7 @@ services:
       - "1521:1521"
     volumes:
       - ./oracle_scripts:/opt/oracle/scripts/setup
+      - ./images:/opt/oracle/images:ro
     environment:
       ORACLE_PWD: cybertec
       
@@ -84,6 +85,20 @@ services:
       POSTGRES_DB: debezium
       POSTGRES_PASSWORD: dbz
       POSTGRES_USER: dbzuser
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    ports:
+      - 5050:80
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ian.readman@cybertec.at
+      PGADMIN_DEFAULT_PASSWORD: secret
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+      PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: 'False'
+    configs:
+      - source: pgadmin-servers
+        target: /pgadmin4/servers.json
+        mode: 0444
 
   connect:
     image: quay.io/debezium/connect:${DEBEZIUM_VERSION}
@@ -134,11 +149,18 @@ volumes:
   kafka-2-data:
   kafka-3-data:
 
-# Versions
-# Kafka    = 4.3.1 
-# Debezium = 3.7
-# Oracle   = 21
-# Postgres = 18
-
-# KAFKA_VERSION=4.3.1 DEBEZIUM_VERSION=3.7 POSTGRES_VERSION=18 ORACLE_VERSION=21 docker compose up -d
-# KAFKA_VERSION=4.3.1 DEBEZIUM_VERSION=3.7 POSTGRES_VERSION=18 ORACLE_VERSION=21 docker compose down -v
+configs:
+  pgadmin-servers:
+    content: |
+      {
+        "Servers": {
+          "1": {
+            "Name": "Postgres 18",
+            "Group": "Servers",
+            "Host": "postgres18",
+            "Port": 5432,
+            "MaintenanceDB": "debezium",
+            "Username": "dbzuser"
+          }
+        }
+      }

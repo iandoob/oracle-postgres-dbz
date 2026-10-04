@@ -13,8 +13,9 @@ Also download the Oracle JDBC Driver (ojdbc17.jar) from https://www.oracle.com/d
 Amend the location of this file in the docker-compose.yaml file.
 
 ### Docker Environment
+Environment variables can be updated in the .env file.  
 ```
-KAFKA_VERSION=4.3.1 DEBEZIUM_VERSION=3.7 POSTGRES_VERSION=18 ORACLE_VERSION=21 docker compose up -d
+docker compose up -d
 ```
 The Oracle Database will take about 7 minutes to setup.  
 
@@ -23,10 +24,16 @@ The Oracle Database will take about 7 minutes to setup.
 curl -i -X POST -H "Accept:application/json" -H "Content-Type:application/json" localhost:8083/connectors -d @register-oracle.json
 curl -i -X POST -H "Accept:application/json" -H "Content-Type:application/json" localhost:8083/connectors -d @register-jdbc-sink-postgres.json
 ```
+
+## User Interfaces
+
 ### Kafka UI
 http://localhost:8080/ui/clusters/local/connectors  
 Username: admin  
 Password: Admin@123  
+
+### pgAdmin
+http://localhost:5050/browser/
 
 ### Database Connections
 sqlplus c##dbzuser/dbz@localhost:1521/XEPDB1  

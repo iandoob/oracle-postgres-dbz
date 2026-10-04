@@ -9,7 +9,7 @@ git clone https://github.com/oracle/docker-images.git
 cd docker-images/OracleDatabase/SingleInstance/dockerfiles
 ./buildContainerImage.sh -v 21.3.0 -x -t oracle/database:21
 ```
-Also download the Oracle JDBC Driver (ojdbc17.jar) from https://www.oracle.com/database/technologies/appdev/jdbc-downloads.html  
+Download the Oracle JDBC Driver (ojdbc17.jar): https://www.oracle.com/database/technologies/appdev/jdbc-downloads.html  
 Amend the location of this file in the docker-compose.yaml file.
 
 ### Docker Environment
@@ -20,9 +20,19 @@ docker compose up -d
 The Oracle Database will take about 7 minutes to setup.  
 
 ### Debezium Connectors
+
+#### Debezium Oracle Source Connector
+Capture changes via LogMiner.  
 ```
-curl -i -X POST -H "Accept:application/json" -H "Content-Type:application/json" localhost:8083/connectors -d @register-oracle.json
-curl -i -X POST -H "Accept:application/json" -H "Content-Type:application/json" localhost:8083/connectors -d @register-jdbc-sink-postgres.json
+curl -i -X POST -H "Accept:application/json" -H "Content-Type:application/json" \
+     localhost:8083/connectors -d @register-oracle.json
+```
+
+#### Debezium JDBC Sink Connector
+Write all changes to the Postgres Database.  
+```
+curl -i -X POST -H "Accept:application/json" -H "Content-Type:application/json" \
+     localhost:8083/connectors -d @register-jdbc-sink-postgres.json
 ```
 
 ## User Interfaces

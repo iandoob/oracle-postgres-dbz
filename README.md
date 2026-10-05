@@ -9,7 +9,7 @@ git clone https://github.com/oracle/docker-images.git
 cd docker-images/OracleDatabase/SingleInstance/dockerfiles
 ./buildContainerImage.sh -v 21.3.0 -x -t oracle/database:21
 ```
-Download the Oracle JDBC Driver (ojdbc17.jar): https://www.oracle.com/database/technologies/appdev/jdbc-downloads.html  
+Download the Oracle JDBC Driver: [ojdbc17.jar](https://www.oracle.com/database/technologies/appdev/jdbc-downloads.html)  
 Amend the location of this file in the docker-compose.yaml file.
 
 ### Docker Environment

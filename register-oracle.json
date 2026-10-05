@@ -10,7 +10,7 @@
     "database.pdb.name": "XEPDB1",
     "database.url": "jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=oracle21)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=XEPDB1)))",
     "log.mining.strategy" : "online_catalog",
-    "schema.history.internal.kafka.bootstrap.servers": "kafka-1:9092,kafka-2:9092",
+    "schema.history.internal.kafka.bootstrap.servers": "kafka-1:9092,kafka-2:9092,kafka-3:9092",
     "schema.history.internal.kafka.topic": "schema-changes.inventory",
     "snapshot.mode": "initial",
     "table.include.list": "C##DBZUSER.(FOOTBALL)_.*",
